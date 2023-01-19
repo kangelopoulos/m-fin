@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Uploads = () => {
-  return <h1>hi</h1>
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(0);
+  
+  useEffect(() => {
+
+  }, []);
+
+  useEffect(() => {
+
+  }, []);
+
+  return (
+    <h1></h1>
+  );
 }
 
 export default Uploads;
