@@ -9,4 +9,4 @@ CREATE TABLE  public.uploads (
   OIDS=FALSE  
 );
 
-INSERT INTO public.uploads(date, csv1, csv2, csv3) VALUES ("1-10-2022", "one.csv", "two.csv", "three.csv");
+INSERT INTO public.uploads(date, csv1, csv2, csv3) VALUES ('2022-10-13', 'one.csv', 'two.csv', 'three.csv');
