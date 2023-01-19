@@ -2,6 +2,7 @@
 const express = require('express');
 const path = require('path');
 const PORT = 3000;
+const uploadRouter = require('./routes/uploadRouter.js');
 
 // create express ap
 const app = express();
@@ -15,7 +16,7 @@ app.use(express.json());
 /**
  * Routes
  */
-
+app.use('/upload', uploadRouter);
 
 // console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'production') {
