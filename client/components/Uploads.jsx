@@ -7,7 +7,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
+import Button from '@mui/material/Button';
+import '../styles/uploads.scss';
 
 
 const Uploads = () => {
@@ -34,7 +35,7 @@ const Uploads = () => {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer className="uploads" component={Paper}>
       <Table size="small" aria-label="dense table">
         <TableHead>
           <TableRow>
@@ -53,9 +54,21 @@ const Uploads = () => {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell align="left">{row.date}</TableCell>
-                  <TableCell align="center">{row.csv1}</TableCell>
-                  <TableCell align="center">{row.csv2}</TableCell>
-                  <TableCell align="center">{row.csv3}</TableCell>
+                  <TableCell align="center">
+                    <Button variant="contained">
+                      {row.csv1}
+                    </Button>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button variant="contained">
+                      {row.csv2}
+                    </Button>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button variant="contained">
+                      {row.csv3}
+                    </Button>
+                  </TableCell>
                 </TableRow>
               )
             })
