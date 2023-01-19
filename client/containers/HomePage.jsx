@@ -1,7 +1,8 @@
 import React from "react";
+import Upload from '../components/Upload.jsx';
 
 const HomePage = () => {
-  return <h1>hi</h1>
+  return <Upload />
 }
 
 export default HomePage;
