@@ -1,7 +1,7 @@
 import React from "react";
 
-const Payment = () => {
+const HomePage = () => {
   return <h1>hi</h1>
 }
 
-export default Payment;
+export default HomePage;
