@@ -53,7 +53,9 @@ const Uploads = () => {
                 <TableRow key={`${row.date}_${i}`}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell align="left">{row.date}</TableCell>
+                  <TableCell align="left">
+                    {row.date}
+                  </TableCell>
                   <TableCell align="center">
                     <Button variant="contained">
                       {row.csv1}
