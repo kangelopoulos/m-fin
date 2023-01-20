@@ -23,9 +23,12 @@ const HomePage = () => {
   }
 
   const approve = async () => {
-    const res = await axios.post('/upload/', file, { 
+    console.log(file);
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await axios.post('/upload/', formData, { 
       headers: {
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data",
       },
     });
     console.log(res);
