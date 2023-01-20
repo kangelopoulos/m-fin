@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Upload from '../components/Upload.jsx';
 import Uploads from "./Uploads.jsx";
 import Payments from "./Payments.jsx";
@@ -7,16 +7,29 @@ import axios from "axios";
 
 const HomePage = () => {
   const [payments, setPayments] = useState("");
+  const [file, setFile] = useState(new Blob());
+  
+  useEffect(() => {
+    const reader = new FileReader();
+    reader.readAsText(file); 
+    reader.onloadend = e => {
+      const xml = e.target.result;
+      setPayments(xml);
+    }
+  }, [file]);
 
   const cancel = () => {
     setPayments("");
   }
 
-  const approve = () => {
-    const res = axios.post('/uploads/', { 
-      payments: payments
-    })
-  }
+  const approve = async () => {
+    const res = await axios.post('/upload/', file, { 
+      headers: {
+        "Content-Type": "multipart/form-data"
+      },
+    });
+    console.log(res);
+  };
 
   return (
     <div>
@@ -24,7 +37,7 @@ const HomePage = () => {
         payments.length === 0 ? 
         <>
           <h1 className="title">Dunkin Dashboard</h1>
-          <Upload setPayments={setPayments}/>
+          <Upload setFile={setFile}/>
           <h2 className="title">Previous Uploads</h2>
           <Uploads />
         </>

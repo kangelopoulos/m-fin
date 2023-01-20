@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import axios from "axios";
 import '../styles/drag.scss';
 
-function Upload({ setPayments }) {
+function Upload({ setFile }) {
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({});
   const files = acceptedFiles.map((file) => (
     <li className="file" key={file.path}>
@@ -15,13 +15,7 @@ function Upload({ setPayments }) {
   
   const processFile = async (e) => {
     e.preventDefault();
-    const file = acceptedFiles[0];
-    const reader = new FileReader();
-    reader.readAsText(file); 
-    reader.onloadend = e => {
-      const xml = e.target.result;
-      setPayments(xml);
-    }
+    setFile(acceptedFiles[0]);
   };
 
   return (
