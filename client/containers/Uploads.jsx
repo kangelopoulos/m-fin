@@ -23,15 +23,9 @@ const Uploads = () => {
           offset: page
         }
       }); 
-      console.log(res.data);
       setData(res.data);
     }
     getData();
-    console.log(data);
-  }, []);
-
-  useEffect(() => {
-
   }, []);
 
   return (
@@ -48,12 +42,13 @@ const Uploads = () => {
         <TableBody>
           {
             data.map((row, i) => {
-              console.log('row', row);
               return (
                 <TableRow key={`${row.date}_${i}`}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell align="left">{row.date}</TableCell>
+                  <TableCell align="left">
+                    {row.date}
+                  </TableCell>
                   <TableCell align="center">
                     <Button variant="contained">
                       {row.csv1}

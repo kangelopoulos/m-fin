@@ -1,4 +1,4 @@
-const db = require('../models/postgres')
+const db = require('../models/postgres');
 const uploadController = {};
 
 uploadController.get = async (req, res, next) => {
@@ -18,6 +18,10 @@ uploadController.get = async (req, res, next) => {
     }); 
   }
 };
+
+uploadController.post = (req, res, next) =>{
+
+}
 
 
 module.exports = uploadController;
