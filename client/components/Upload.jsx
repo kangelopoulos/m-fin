@@ -1,21 +1,27 @@
 import React, { useEffect } from "react";
+import XMLParser from 'react-xml-parser';
 import { useDropzone } from "React-dropzone";
 import Button from '@mui/material/Button';
-import { useNavigate } from "react-router";
+import axios from "axios";
 import '../styles/drag.scss';
 
-function Upload({ open }) {
+function Upload({ setPayments }) {
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({});
-  const navigate = useNavigate();
   const files = acceptedFiles.map((file) => (
     <li className="file" key={file.path}>
       {file.path} - {file.size} bytes
     </li>
   ));
   
-  const processFile = (e) => {
+  const processFile = async (e) => {
     e.preventDefault();
-    navigate('/payments');
+    const file = acceptedFiles[0];
+    const reader = new FileReader();
+    reader.readAsText(file); 
+    reader.onloadend = e => {
+      const xml = e.target.result;
+      setPayments(xml);
+    }
   };
 
   return (

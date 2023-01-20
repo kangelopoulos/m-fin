@@ -12,6 +12,7 @@ router.get(
 
 router.post(
   '/',
+  uploadController.post,
   (req, res) => {
     return res.status(200).json(res.locals);
   }
