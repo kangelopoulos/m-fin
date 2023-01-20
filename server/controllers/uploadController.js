@@ -20,7 +20,8 @@ uploadController.get = async (req, res, next) => {
 };
 
 uploadController.post = (req, res, next) =>{
-
+  console.log(req.body);
+  return next();
 }
 
 

@@ -3,12 +3,21 @@ import Upload from '../components/Upload.jsx';
 import Uploads from "./Uploads.jsx";
 import Payments from "./Payments.jsx";
 import '../styles/global.scss';
+import axios from "axios";
 
 const HomePage = () => {
   const [payments, setPayments] = useState("");
-  const approve = () => {
 
+  const cancel = () => {
+    setPayments("");
   }
+
+  const approve = () => {
+    const res = axios.post('/uploads/', { 
+      payments: payments
+    })
+  }
+
   return (
     <div>
       {
@@ -20,7 +29,7 @@ const HomePage = () => {
           <Uploads />
         </>
         :
-        <Payments data={payments}/> 
+        <Payments cancel={cancel} approve={approve} data={payments}/> 
       }
     </div>
   )

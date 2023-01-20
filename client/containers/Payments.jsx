@@ -10,7 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import '../styles/payments.scss';
 
-const Payments = ({ data }) => {
+const Payments = ({ data, cancel, approve }) => {
   const payments = data.split("<row>").map(e => {
     return "<row>" + e;
   });
@@ -81,10 +81,10 @@ const Payments = ({ data }) => {
         </Button>
       </div>
       <div className="buttons">
-        <Button variant="contained">
+        <Button onClick={approve} variant="contained">
           Accept
         </Button>
-        <Button variant="contained">
+        <Button onClick={cancel} variant="contained">
           Cancel
         </Button>
       </div>
