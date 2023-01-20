@@ -1,4 +1,6 @@
 const db = require('../models/postgres');
+const fs = require('fs');
+const convert = require('xml-js');
 const uploadController = {};
 
 uploadController.get = async (req, res, next) => {
@@ -25,7 +27,14 @@ uploadController.post = async (req, res, next) =>{
   } else { 
     try {
       console.log(req.files.file.data);
-
+      const readStream = fs.createReadStream(req.files.file.data);
+      let xmlStr = '';
+      readStream.on('data', (chunk) => {
+        xmlStr += chunk;
+      });
+      readStream.on('end', (xmlStr) => {
+        console.log(xmlStr);
+      });
     } catch(err) { 
       return next({
         log: `Error in uploadController.post: ${err}`,
