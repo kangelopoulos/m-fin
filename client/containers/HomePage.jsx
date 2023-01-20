@@ -22,11 +22,11 @@ const HomePage = () => {
     setPayments("");
   }
 
-  const approve = async () => {
+  const approve = () => {
     console.log(file);
     const formData = new FormData();
     formData.append("file", file);
-    const res = await axios.post('/upload/', formData, { 
+    const res = axios.post('/upload/', formData, { 
       headers: {
         "Content-Type": "multipart/form-data",
       },

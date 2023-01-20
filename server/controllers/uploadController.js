@@ -1,5 +1,6 @@
 const db = require('../models/postgres');
 const fs = require('fs');
+const XMLStream = require('xml-stream');
 const convert = require('xml-js');
 const uploadController = {};
 
@@ -26,15 +27,13 @@ uploadController.post = async (req, res, next) =>{
     return next();
   } else { 
     try {
-      console.log(req.files.file.data);
-      const readStream = fs.createReadStream(req.files.file.data);
-      let xmlStr = '';
-      readStream.on('data', (chunk) => {
-        xmlStr += chunk;
-      });
-      readStream.on('end', (xmlStr) => {
-        console.log(xmlStr);
-      });
+      console.log(req.files);
+      // const readStream = fs.createReadStream(req.files.file.data);
+      // let xmlStr = '';
+      // readStream.on('data', (chunk) => {
+      //   xmlStr += chunk;
+      // });
+      
     } catch(err) { 
       return next({
         log: `Error in uploadController.post: ${err}`,
