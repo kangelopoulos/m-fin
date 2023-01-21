@@ -1,4 +1,5 @@
 const db = require('../models/postgres');
+const convert = require("xml2js"); 
 const fs = require('fs');
 
 const uploadController = {};
@@ -21,7 +22,7 @@ uploadController.get = async (req, res, next) => {
   }
 };
 
-uploadController.post = async (req, res, next) =>{
+uploadController.convert = async (req, res, next) =>{
   if(!req.files){
     return next();
   } else { 
@@ -34,14 +35,12 @@ uploadController.post = async (req, res, next) =>{
         xmlStr += chunk;
       });
       readStream.on('end', () => {
-        const data = convert.xml2js(xmlStr, { 
-          compact: true,
-          trim: true,
+        const parser = new convert.Parser({explicitArray : false})
+        parser.parseString(xmlStr, function (err, results) {
+          let data = results;
+          console.log("results",data.root.row);
         });
-        console.log(data.root.row);
-        const procData = data.root.row.map(row => {
-          
-        });
+        res.locals = data.root.row;
       });
       
     } catch(err) { 
@@ -54,5 +53,34 @@ uploadController.post = async (req, res, next) =>{
   }
 }
 
-
+uploadController.methodCalls = async (req, res, next) =>{
+  if(!req.files){
+    return next();
+  } else { 
+    try {
+      console.log(req.files);
+      const readStream = fs.createReadStream(req.files.file.tempFilePath);
+      let xmlStr = '';
+      readStream.on('data', (chunk) => {
+        console.log(chunk);
+        xmlStr += chunk;
+      });
+      readStream.on('end', () => {
+        const parser = new convert.Parser({explicitArray : false})
+        parser.parseString(xmlStr, function (err, results) {
+          let data = results;
+          console.log("results",data.root.row);
+        });
+        res.locals = data.root.row;
+      });
+      
+    } catch(err) { 
+      return next({
+        log: `Error in uploadController.post: ${err}`,
+        status: 500,
+        message: 'Cannot get !'
+      }); 
+    }
+  }
+}
 module.exports = uploadController;
