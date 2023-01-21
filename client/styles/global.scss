@@ -3,11 +3,11 @@
 .title{
   text-align: center;
 }
-
+* {
+  font-family: $text-font !important;
+}
 h1, h2 {
-  font-family: $header-font;
+  font-family: $header-font !important;
+  color: $black;
 }
 
-body {
-  font-family: $text-font;
-}

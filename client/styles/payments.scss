@@ -1,7 +1,10 @@
+@import './variables.scss';
 .buttons {
   display: flex;
   flex-direction: row; 
-  justify-content: center;
+  justify-content: center;  
+}
 
-  
+.payments {
+  font-family: $text-font;
 }
