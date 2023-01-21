@@ -45,9 +45,9 @@ uploadController.convert = async (req, res, next) =>{
       
     } catch(err) { 
       return next({
-        log: `Error in uploadController.post: ${err}`,
+        log: `Error in uploadController.convert: ${err}`,
         status: 500,
-        message: 'Cannot get !'
+        message: 'An error occured.'
       }); 
     }
   }
@@ -57,7 +57,11 @@ uploadController.createCSVFiles = async (req, res, next) => {
   try {
 
   } catch (err) {
-
+    return next({
+      log: `Error in uploadController.createCSVFiles: ${err}`,
+      status: 500,
+      message: 'An error occured.'
+    }); 
   }
 };
 
@@ -65,7 +69,11 @@ uploadController.callMethodAPI = async (req, res, next) =>{
   try {
 
   } catch (err) {
-    
+    return next({
+      log: `Error in uploadController.callMethodAPI: ${err}`,
+      status: 500,
+      message: 'An error occured.'
+    }); 
   }
 };
 
@@ -73,7 +81,11 @@ uploadController.addToS3 = async (req, res, next) => {
   try {
 
   } catch (err) {
-    
+    return next({
+      log: `Error in uploadController.addToS3: ${err}`,
+      status: 500,
+      message: 'An error occured.'
+    }); 
   }
 };
 
@@ -81,7 +93,11 @@ uploadController.deleteLocalFiles = async (req, res, next) => {
   try {
 
   } catch (err) {
-    
+    return next({
+      log: `Error in uploadController.deleteLocalFiles: ${err}`,
+      status: 500,
+      message: 'An error occured.'
+    }); 
   }
 };
 
