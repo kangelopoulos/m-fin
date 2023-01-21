@@ -35,8 +35,9 @@ uploadController.post = async (req, res, next) =>{
       });
       readStream.on('end', () => {
         const data = convert.xml2js(xmlStr, { compact:true, spaces:4 });
+        console.log(data.root.row);
         // const procData = data.root.row.map(row => {
-      
+    
         // })
       });
       
