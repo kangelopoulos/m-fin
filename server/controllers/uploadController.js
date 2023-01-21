@@ -55,14 +55,18 @@ uploadController.convert = async (req, res, next) =>{
 
 uploadController.createCSVFiles = async (req, res, next) => {
 
-}
+};
 
 uploadController.callMethodAPI = async (req, res, next) =>{
 
-}
+};
 
 uploadController.addToS3 = async (req, res, next) => {
 
-}
+};
+
+uploadController.deleteLocalFiles = async (req, res, next) => {
+
+};
 
 module.exports = uploadController;
