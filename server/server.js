@@ -2,6 +2,7 @@
 const express = require('express');
 const path = require('path');
 const PORT = 3000;
+const fileUpload = require('express-fileupload');
 const uploadRouter = require('./routes/uploadRouter.js');
 
 // create express ap
@@ -12,6 +13,10 @@ const app = express();
  */
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(fileUpload({
+  useTempFiles : true,
+  tempFileDir : '/tmp/'
+}));
 
 /**
  * Routes
