@@ -1,6 +1,6 @@
 const db = require('../models/postgres');
 const fs = require('fs');
-const convert = require('xml-js');
+
 const uploadController = {};
 
 uploadController.get = async (req, res, next) => {
@@ -34,11 +34,14 @@ uploadController.post = async (req, res, next) =>{
         xmlStr += chunk;
       });
       readStream.on('end', () => {
-        const data = convert.xml2js(xmlStr, { compact:true, spaces:4 });
+        const data = convert.xml2js(xmlStr, { 
+          compact: true,
+          trim: true,
+        });
         console.log(data.root.row);
-        // const procData = data.root.row.map(row => {
-    
-        // })
+        const procData = data.root.row.map(row => {
+          
+        });
       });
       
     } catch(err) { 
