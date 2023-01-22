@@ -37,10 +37,9 @@ uploadController.convert = async (req, res, next) =>{
       readStream.on('end', () => {
         const parser = new convert.Parser({explicitArray : false})
         parser.parseString(xmlStr, function (err, results) {
-          let data = results;
-          console.log("results",data.root.row);
+          res.locals.data = results.root.row;
         });
-        res.locals = data.root.row;
+        console.log(res.locals.data[0].Payor.Address);
       });
       
     } catch(err) { 
