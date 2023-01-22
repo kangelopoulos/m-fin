@@ -39,9 +39,9 @@ uploadController.convert = async (req, res, next) =>{
         parser.parseString(xmlStr, function (err, results) {
           res.locals.data = results.root.row;
         });
-        console.log(res.locals.data[0].Payor.Address);
+        console.log(results.root.row[0]);
+        return next();
       });
-      
     } catch(err) { 
       return next({
         log: `Error in uploadController.convert: ${err}`,
@@ -54,7 +54,13 @@ uploadController.convert = async (req, res, next) =>{
 
 uploadController.createCSVFiles = async (req, res, next) => {
   try {
-
+    console.log('here');
+    const today = new Date();
+    console.log('here');
+    fs.writeFile(`./tempStorage/${today}-payouts-per-source`, 'DunkinId,ABARouting,AccountNumber,Name,DBA,Address,Amount', (err) => console.error(err));
+    fs.writeFile(`./tempStorage/${today}-payouts-per-branch`, 'DunkinBranch,Amount', (err) => console.error(err));
+    fs.writeFile(`./tempStorage/${today}-all-payouts`, 'DunkinId,DunkinBranch,FirstName,LastName,DOB,PhoneNumber,DunkinId,ABARoutingNumber,AccountNumber,Name,DBA,EIN,AddressLine1,City,State,Zip,PlaidId,LoanAccountNumber,Amount,Status', (err) => console.error(err));
+    return next();
   } catch (err) {
     return next({
       log: `Error in uploadController.createCSVFiles: ${err}`,
