@@ -12,7 +12,6 @@ uploadController.get = async (req, res, next) => {
     const vals = [limit, offset];
     const q = `SELECT * FROM public.uploads ORDER BY date LIMIT $1 OFFSET $2`;
     const { rows } = await db.query(q, vals);
-    console.log(rows);
     res.locals = rows;
     return next();
   } catch (err) {
@@ -32,7 +31,6 @@ uploadController.convert = async (req, res, next) =>{
       const readStream = fs.createReadStream(req.files.file.tempFilePath);
       let xmlStr = '';
       readStream.on('data', (chunk) => {
-        console.log(chunk);
         xmlStr += chunk;
       });
       readStream.on('end', () => {
@@ -55,15 +53,9 @@ uploadController.convert = async (req, res, next) =>{
 uploadController.createCSVFiles = async (req, res, next) => {
   try {
     const data = [...res.locals.data];
-    console.log(data, 'data');
     const today = new Date();
-    fs.writeFile(`./tempStorage/${today.toISOString()}-payouts-per-source`, 'DunkinId,Amount\n', (err) => console.error(err));
     helper.createCSV1(data, `./tempStorage/${today.toISOString()}-payouts-per-source`);
-
-    fs.writeFile(`./tempStorage/${today.toISOString()}-payouts-per-branch`, 'DunkinBranch,Amount\n', (err) => console.error(err));
     helper.createCSV2(data, `./tempStorage/${today.toISOString()}-payouts-per-branch`);
-
-    fs.writeFile(`./tempStorage/${today.toISOString()}-all-payouts`, 'DunkinId,DunkinBranch,FirstName,LastName,DOB,PhoneNumber,DunkinId,ABARoutingNumber,AccountNumber,Name,DBA,EIN,AddressLine1,City,State,Zip,PlaidId,LoanAccountNumber,Amount,Status]\n', (err) => console.error(err));
     helper.createCSV3(data, `./tempStorage/${today.toISOString()}-all-payouts`);
 
     return next();
