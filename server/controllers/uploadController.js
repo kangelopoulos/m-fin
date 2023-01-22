@@ -53,18 +53,23 @@ uploadController.convert = async (req, res, next) =>{
 
 uploadController.parseData = async (req, res, next) => {
   try {
-    const accounts = {};
+    const sources = {};
+    const destinations = {}
     const branches = {};
     const individuals = {};
-    const payments = {};
 
     for(let i = 0; i < res.locals.data.length; i++){
       if(!individuals[res.locals.data[i].Employee.DunkinId]){
         individuals[res.locals.data[i].Employee.DunkinId] = {
-          first_name: res.locals.data[i].Employee.FirstName,
-          last_name: res.locals.data[i].Employee.LastName,
-          phone: '+15121231111',
-          dob: res.locals.data[i].Employee.DOB,
+          type: 'individual',
+          individual: {
+            first_name: res.locals.data[i].Employee.FirstName,
+            last_name: res.locals.data[i].Employee.LastName,
+            phone: '+15121231111',
+            email: null,
+            dob: res.locals.data[i].Employee.DOB,
+          },
+          address: {},
           metadata: {
             dunkin_id: res.locals.data[i].Employee.DunkinId
           }
@@ -72,13 +77,51 @@ uploadController.parseData = async (req, res, next) => {
       }
       if(!branches[res.locals.data[i].Payor.DunkinId]){
         branches[res.locals.data[i].Payor.DunkinId] = {
+          type: 'llc',
           corporation: {
-            
+            name: res.locals.data[i].Payor.Name,
+            dba: res.locals.data[i].Payor.DBA,
+            ein: res.locals.data[i].Payor.EIN,
+            owners: [],
+          },
+          address: {
+            line1: res.locals.data[i].Payor.Address.Line1,
+            line2: null,
+            city: res.locals.data[i].Payor.Address.City,
+            state: res.locals.data[i].Payor.Address.State,
+            zip: res.locals.data[i].Payor.Address.Zip
+          }, 
+          metadata: {
+            DunkinBranch: res.locals.data[i].Employee.DunkinBranch,
+            DunkinId: res.locals.data[i].Payor.DunkinId
           }
         }
       }
+      if(!sources[res.locals.data[i].Payor.AccountNumber]){
+        sources[res.locals.data[i].Payor.DunkinId] = {
+          holder_id: null,
+          ach: {
+            routing: res.locals.data[i].Payor.ABARouting,
+            number: res.locals.data[i].Payor.AccountNumber,
+            type: 'checking'
+          }
+        }
+      }
+      if(!destinations[res.locals.data[i].Payee.PlaidId]){
+        destinations[res.locals.data[i].Payee.PlaidId] = {
+          holder_id: null,
+          liability: {
+            plaid_id: res.locals.data[i].Payee.PlaidId,
+            account_number: res.locals.data[i].Payee.LoanAccountNumber,
+          }
+        };
+      }
     }
-
+    res.locals.destinations = destinations;
+    res.locals.sources = sources;
+    res.locals.individuals = individuals;
+    res.locals.branches = branches;
+    console.log(sources[0], branches[0], destinations[0], individuals[0]);
   } catch (err) {
     console.log(err);   
   }
@@ -88,9 +131,8 @@ uploadController.createCSVFiles = async (req, res, next) => {
   try {
     const data = [...res.locals.data];
     const today = new Date();
-    await helper.createCSV1(data, `./tempStorage/${today.toISOString()}-payouts-per-source`);
-    await helper.createCSV2(data, `./tempStorage/${today.toISOString()}-payouts-per-branch`);
-    await helper.createCSV3(data, `./tempStorage/${today.toISOString()}-all-payouts`);
+    await helper.createCSVs(data, `./tempStorage/${today.toISOString()}-payouts-per-source`,`./tempStorage/${today.toISOString()}-payouts-per-branch`,`./tempStorage/${today.toISOString()}-all-payouts`);
+
     return next();
   } catch (err) {
     return next({
