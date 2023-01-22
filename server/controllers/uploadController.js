@@ -1,6 +1,7 @@
 const db = require('../models/postgres');
+const convert = require("xml2js"); 
 const fs = require('fs');
-const convert = require('xml-js');
+
 const uploadController = {};
 
 uploadController.get = async (req, res, next) => {
@@ -21,7 +22,7 @@ uploadController.get = async (req, res, next) => {
   }
 };
 
-uploadController.post = async (req, res, next) =>{
+uploadController.convert = async (req, res, next) =>{
   if(!req.files){
     return next();
   } else { 
@@ -34,21 +35,69 @@ uploadController.post = async (req, res, next) =>{
         xmlStr += chunk;
       });
       readStream.on('end', () => {
-        const data = convert.xml2js(xmlStr, { compact:true, spaces:4 });
-        const procData = data.root.row.map(row => {
-          const 
-        })
+        const parser = new convert.Parser({explicitArray : false})
+        parser.parseString(xmlStr, function (err, results) {
+          res.locals.data = results.root.row;
+        });
+        console.log(res.locals.data[0].Payor.Address);
       });
       
     } catch(err) { 
       return next({
-        log: `Error in uploadController.post: ${err}`,
+        log: `Error in uploadController.convert: ${err}`,
         status: 500,
-        message: 'Cannot get !'
+        message: 'An error occured.'
       }); 
     }
   }
 }
 
+uploadController.createCSVFiles = async (req, res, next) => {
+  try {
+
+  } catch (err) {
+    return next({
+      log: `Error in uploadController.createCSVFiles: ${err}`,
+      status: 500,
+      message: 'An error occured.'
+    }); 
+  }
+};
+
+uploadController.callMethodAPI = async (req, res, next) =>{
+  try {
+
+  } catch (err) {
+    return next({
+      log: `Error in uploadController.callMethodAPI: ${err}`,
+      status: 500,
+      message: 'An error occured.'
+    }); 
+  }
+};
+
+uploadController.addToS3 = async (req, res, next) => {
+  try {
+
+  } catch (err) {
+    return next({
+      log: `Error in uploadController.addToS3: ${err}`,
+      status: 500,
+      message: 'An error occured.'
+    }); 
+  }
+};
+
+uploadController.deleteLocalFiles = async (req, res, next) => {
+  try {
+
+  } catch (err) {
+    return next({
+      log: `Error in uploadController.deleteLocalFiles: ${err}`,
+      status: 500,
+      message: 'An error occured.'
+    }); 
+  }
+};
 
 module.exports = uploadController;

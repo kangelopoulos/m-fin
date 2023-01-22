@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import XMLParser from 'react-xml-parser';
 import { useDropzone } from "React-dropzone";
 import Button from '@mui/material/Button';
 import axios from "axios";

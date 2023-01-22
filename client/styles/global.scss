@@ -1,3 +1,13 @@
+@import './variables.scss';
+
 .title{
   text-align: center;
 }
+* {
+  font-family: $text-font !important;
+}
+h1, h2 {
+  font-family: $header-font !important;
+  color: $black;
+}
+
