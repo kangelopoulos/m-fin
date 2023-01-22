@@ -54,10 +54,9 @@ uploadController.createCSVFiles = async (req, res, next) => {
   try {
     const data = [...res.locals.data];
     const today = new Date();
-    helper.createCSV1(data, `./tempStorage/${today.toISOString()}-payouts-per-source`);
-    helper.createCSV2(data, `./tempStorage/${today.toISOString()}-payouts-per-branch`);
-    helper.createCSV3(data, `./tempStorage/${today.toISOString()}-all-payouts`);
-
+    await helper.createCSV1(data, `./tempStorage/${today.toISOString()}-payouts-per-source`);
+    await helper.createCSV2(data, `./tempStorage/${today.toISOString()}-payouts-per-branch`);
+    await helper.createCSV3(data, `./tempStorage/${today.toISOString()}-all-payouts`);
     return next();
   } catch (err) {
     return next({
@@ -70,7 +69,7 @@ uploadController.createCSVFiles = async (req, res, next) => {
 
 uploadController.callMethodAPI = async (req, res, next) =>{
   try {
-
+    
   } catch (err) {
     return next({
       log: `Error in uploadController.callMethodAPI: ${err}`,
