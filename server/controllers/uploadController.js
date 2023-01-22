@@ -37,6 +37,7 @@ uploadController.convert = async (req, res, next) =>{
         const parser = new convert.Parser({explicitArray : false})
         parser.parseString(xmlStr, function (err, results) {
           res.locals.data = results.root.row;
+          console.log(res.locals.data[0]);
         });
         return next();
       });
@@ -48,7 +49,40 @@ uploadController.convert = async (req, res, next) =>{
       }); 
     }
   }
-}
+};
+
+uploadController.parseData = async (req, res, next) => {
+  try {
+    const accounts = {};
+    const branches = {};
+    const individuals = {};
+    const payments = {};
+
+    for(let i = 0; i < res.locals.data.length; i++){
+      if(!individuals[res.locals.data[i].Employee.DunkinId]){
+        individuals[res.locals.data[i].Employee.DunkinId] = {
+          first_name: res.locals.data[i].Employee.FirstName,
+          last_name: res.locals.data[i].Employee.LastName,
+          phone: '+15121231111',
+          dob: res.locals.data[i].Employee.DOB,
+          metadata: {
+            dunkin_id: res.locals.data[i].Employee.DunkinId
+          }
+        }
+      }
+      if(!branches[res.locals.data[i].Payor.DunkinId]){
+        branches[res.locals.data[i].Payor.DunkinId] = {
+          corporation: {
+            
+          }
+        }
+      }
+    }
+
+  } catch (err) {
+    console.log(err);   
+  }
+};
 
 uploadController.createCSVFiles = async (req, res, next) => {
   try {
