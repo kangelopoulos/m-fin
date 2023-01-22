@@ -1,6 +1,8 @@
 const db = require('../models/postgres');
 const convert = require("xml2js"); 
+const worker = require('node:worker_threads');
 const fs = require('fs');
+const helper = require('../helpers/csv');
 
 const uploadController = {};
 
@@ -27,7 +29,6 @@ uploadController.convert = async (req, res, next) =>{
     return next();
   } else { 
     try {
-      console.log(req.files);
       const readStream = fs.createReadStream(req.files.file.tempFilePath);
       let xmlStr = '';
       readStream.on('data', (chunk) => {
@@ -39,7 +40,6 @@ uploadController.convert = async (req, res, next) =>{
         parser.parseString(xmlStr, function (err, results) {
           res.locals.data = results.root.row;
         });
-        console.log(results.root.row[0]);
         return next();
       });
     } catch(err) { 
@@ -54,12 +54,18 @@ uploadController.convert = async (req, res, next) =>{
 
 uploadController.createCSVFiles = async (req, res, next) => {
   try {
-    console.log('here');
+    const data = [...res.locals.data];
+    console.log(data, 'data');
     const today = new Date();
-    console.log('here');
-    fs.writeFile(`./tempStorage/${today}-payouts-per-source`, 'DunkinId,ABARouting,AccountNumber,Name,DBA,Address,Amount', (err) => console.error(err));
-    fs.writeFile(`./tempStorage/${today}-payouts-per-branch`, 'DunkinBranch,Amount', (err) => console.error(err));
-    fs.writeFile(`./tempStorage/${today}-all-payouts`, 'DunkinId,DunkinBranch,FirstName,LastName,DOB,PhoneNumber,DunkinId,ABARoutingNumber,AccountNumber,Name,DBA,EIN,AddressLine1,City,State,Zip,PlaidId,LoanAccountNumber,Amount,Status', (err) => console.error(err));
+    fs.writeFile(`./tempStorage/${today.toISOString()}-payouts-per-source`, 'DunkinId,Amount\n', (err) => console.error(err));
+    helper.createCSV1(data, `./tempStorage/${today.toISOString()}-payouts-per-source`);
+
+    fs.writeFile(`./tempStorage/${today.toISOString()}-payouts-per-branch`, 'DunkinBranch,Amount\n', (err) => console.error(err));
+    helper.createCSV2(data, `./tempStorage/${today.toISOString()}-payouts-per-branch`);
+
+    fs.writeFile(`./tempStorage/${today.toISOString()}-all-payouts`, 'DunkinId,DunkinBranch,FirstName,LastName,DOB,PhoneNumber,DunkinId,ABARoutingNumber,AccountNumber,Name,DBA,EIN,AddressLine1,City,State,Zip,PlaidId,LoanAccountNumber,Amount,Status]\n', (err) => console.error(err));
+    helper.createCSV3(data, `./tempStorage/${today.toISOString()}-all-payouts`);
+
     return next();
   } catch (err) {
     return next({

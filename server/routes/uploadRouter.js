@@ -15,8 +15,10 @@ router.post(
   uploadController.convert,
   uploadController.createCSVFiles,
   (req, res) => {
-    return res.status(200).json(res.locals);
-  }
+    res.status(201);
+    return res.send('working on it');
+  },
+
 );
 
 module.exports = router;
