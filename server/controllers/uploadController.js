@@ -142,7 +142,9 @@ uploadController.createCSVFiles = async (req, res, next) => {
 
 uploadController.callMethodAPI = async (req, res, next) =>{
   try {
-    
+    const int1 = setInterval(() => {
+
+    }, )
   } catch (err) {
     return next({
       log: `Error in uploadController.callMethodAPI: ${err}`,
