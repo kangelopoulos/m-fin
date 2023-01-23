@@ -31,7 +31,7 @@ const HomePage = () => {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(res);
+
   };
 
   return (

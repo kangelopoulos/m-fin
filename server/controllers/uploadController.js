@@ -1,8 +1,7 @@
 const db = require('../models/postgres');
 const convert = require("xml2js"); 
-const worker = require('node:worker_threads');
 const fs = require('fs');
-const helper = require('../helpers/csv');
+
 
 const uploadController = {};
 
@@ -23,24 +22,13 @@ uploadController.get = async (req, res, next) => {
   }
 };
 
-uploadController.convert = async (req, res, next) =>{
+uploadController.store = async (req, res, next) =>{
   if(!req.files){
     return next();
   } else { 
     try {
-      const readStream = fs.createReadStream(req.files.file.tempFilePath);
-      let xmlStr = '';
-      readStream.on('data', (chunk) => {
-        xmlStr += chunk;
-      });
-      readStream.on('end', () => {
-        const parser = new convert.Parser({explicitArray : false})
-        parser.parseString(xmlStr, function (err, results) {
-          res.locals.data = results.root.row;
-          console.log(res.locals.data[0]);
-        });
-        return next();
-      });
+      console.log(req.files);
+      return next();
     } catch(err) { 
       return next({
         log: `Error in uploadController.convert: ${err}`,
@@ -126,52 +114,12 @@ uploadController.parseData = async (req, res, next) => {
   }
 };
 
-uploadController.createCSVFiles = async (req, res, next) => {
-  try {
-    const today = new Date();
-    await helper.createCSVs(res.locals.data, `./tempStorage/${today.toISOString()}-payouts-per-source`,`./tempStorage/${today.toISOString()}-payouts-per-branch`,`./tempStorage/${today.toISOString()}-all-payouts`);
-    return next();
-  } catch (err) {
-    return next({
-      log: `Error in uploadController.createCSVFiles: ${err}`,
-      status: 500,
-      message: 'An error occured.'
-    }); 
-  }
-};
-
 uploadController.callMethodAPI = async (req, res, next) =>{
   try {
-    const int1 = setInterval(() => {
 
-    }, )
   } catch (err) {
     return next({
       log: `Error in uploadController.callMethodAPI: ${err}`,
-      status: 500,
-      message: 'An error occured.'
-    }); 
-  }
-};
-
-uploadController.addToS3 = async (req, res, next) => {
-  try {
-
-  } catch (err) {
-    return next({
-      log: `Error in uploadController.addToS3: ${err}`,
-      status: 500,
-      message: 'An error occured.'
-    }); 
-  }
-};
-
-uploadController.deleteLocalFiles = async (req, res, next) => {
-  try {
-
-  } catch (err) {
-    return next({
-      log: `Error in uploadController.deleteLocalFiles: ${err}`,
       status: 500,
       message: 'An error occured.'
     }); 

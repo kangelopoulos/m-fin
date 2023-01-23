@@ -10,3 +10,4 @@ CREATE TABLE  public.uploads (
 );
 
 INSERT INTO public.uploads(date, csv1, csv2, csv3) VALUES ('2022-10-13', 'one.csv', 'two.csv', 'three.csv');
+INSERT INTO public.uploads(date, csv1, csv2, csv3) VALUES (Date::now(), 'one.csv', 'two.csv', 'three.csv');
