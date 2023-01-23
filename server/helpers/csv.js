@@ -34,7 +34,7 @@ helper.createCSVs = async (data, file1, file2, file3) => {
     })
   }
   for(let i = 0; i < data.length; i++) {
-    fs.appendFile(openFile, `${data[i].Employee.DunkinId},${data[i].Employee.DunkinBranch},${data[i].Employee.FirstName},${data[i].Employee.LastName},${data[i].Employee.DOB},${data[i].Employee.PhoneNumber},${data[i].Payor.DunkinId},${data[i].Payor.ABARouting},${data[i].Payor.AccountNumber},${data[i].Payor.Name},${data[i].Payor.DBA},${data[i].Payor.EIN},${data[i].Payor.Address.Line1},${data[i].Payor.Address.City},${data[i].Payor.Address.State},${data[i].Payor.Address.Zip},${data[i].Payee.PlaidId},${data[i].Payee.LoanAccountNumber},${data[i].Amount},${'Incomplete'}\n`, (err) => {
+    fs.appendFile(openFile3, `${data[i].Employee.DunkinId},${data[i].Employee.DunkinBranch},${data[i].Employee.FirstName},${data[i].Employee.LastName},${data[i].Employee.DOB},${data[i].Employee.PhoneNumber},${data[i].Payor.DunkinId},${data[i].Payor.ABARouting},${data[i].Payor.AccountNumber},${data[i].Payor.Name},${data[i].Payor.DBA},${data[i].Payor.EIN},${data[i].Payor.Address.Line1},${data[i].Payor.Address.City},${data[i].Payor.Address.State},${data[i].Payor.Address.Zip},${data[i].Payee.PlaidId},${data[i].Payee.LoanAccountNumber},${data[i].Amount},${'Incomplete'}\n`, (err) => {
       {};
     })
   }
