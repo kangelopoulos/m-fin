@@ -121,7 +121,6 @@ uploadController.parseData = async (req, res, next) => {
     res.locals.sources = sources;
     res.locals.individuals = individuals;
     res.locals.branches = branches;
-    console.log(sources[0], branches[0], destinations[0], individuals[0]);
   } catch (err) {
     console.log(err);   
   }
@@ -129,10 +128,8 @@ uploadController.parseData = async (req, res, next) => {
 
 uploadController.createCSVFiles = async (req, res, next) => {
   try {
-    const data = [...res.locals.data];
     const today = new Date();
-    await helper.createCSVs(data, `./tempStorage/${today.toISOString()}-payouts-per-source`,`./tempStorage/${today.toISOString()}-payouts-per-branch`,`./tempStorage/${today.toISOString()}-all-payouts`);
-
+    await helper.createCSVs(res.locals.data, `./tempStorage/${today.toISOString()}-payouts-per-source`,`./tempStorage/${today.toISOString()}-payouts-per-branch`,`./tempStorage/${today.toISOString()}-all-payouts`);
     return next();
   } catch (err) {
     return next({
@@ -145,7 +142,9 @@ uploadController.createCSVFiles = async (req, res, next) => {
 
 uploadController.callMethodAPI = async (req, res, next) =>{
   try {
-    
+    const int1 = setInterval(() => {
+
+    }, )
   } catch (err) {
     return next({
       log: `Error in uploadController.callMethodAPI: ${err}`,

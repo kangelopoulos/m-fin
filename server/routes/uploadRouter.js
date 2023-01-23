@@ -14,6 +14,7 @@ router.post(
   '/',
   uploadController.convert,
   uploadController.createCSVFiles,
+  uploadController.parseData,
   (req, res) => {
     res.status(201);
     return res.send('working on it');
